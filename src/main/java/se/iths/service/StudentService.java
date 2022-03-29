@@ -5,8 +5,10 @@ import se.iths.entity.Student;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 public class StudentService {
 
     @PersistenceContext
