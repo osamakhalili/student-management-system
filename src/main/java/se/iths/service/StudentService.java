@@ -35,12 +35,17 @@ public class StudentService {
         entityManager.remove(foundStudent);
     }
 
-    public Student updateEmail(Long id, String email) {
+    public Student updateEmail(Long id, String email ) {
         Student foundStudent = entityManager.find(Student.class, id);
         foundStudent.setEmail(email);
-
         return foundStudent;
     }
+
+    public List<Student> getByLastName(String lastName) {
+        String query = "SELECT i FROM Student i WHERE i.lastName = ?1";
+        return entityManager.createQuery(query, Student.class).setParameter(1, lastName).getResultList();
+    }
+
 
 
 
