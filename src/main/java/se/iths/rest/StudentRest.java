@@ -5,8 +5,6 @@ import se.iths.service.StudentService;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -29,7 +27,7 @@ public class StudentRest {
         try {
             studentService.createStudent(student);
             return Response.ok(student).build();
-        }catch ( Exception ex){
+        }catch (Exception ex){
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
                     .entity  ("Email is alrady used or name is missing " ).type(MediaType.TEXT_PLAIN_TYPE).build());
         }
@@ -72,13 +70,26 @@ public class StudentRest {
     @Path("")
     @PUT
     public Response updateStudent(Student student) {
-        studentService.updateStudent(student);
-        return Response.ok(student).build();
+
+        try {
+            studentService.updateStudent(student);
+            return Response.ok(student).build();
+        }catch (Exception ex){
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity  ("Email is alrady used or Something is missing " ).type(MediaType.TEXT_PLAIN_TYPE).build());
+        }
     }
 
     @Path("{id}")
     @PATCH
     public Response updateEmail(@PathParam("id") Long id, Student student) {
+        Student findStudent = studentService.findStudentById(id);
+
+        if (findStudent == null) {
+
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity("Student with ID " + id + " was not found in database.").type(MediaType.TEXT_PLAIN_TYPE).build());
+        }
 
         Student updateEmail = studentService.updateEmail(id,student.getEmail());
         return Response.ok(updateEmail).build();
@@ -87,6 +98,13 @@ public class StudentRest {
     @Path("{id}")
     @DELETE
     public Response deleteStudent(@PathParam("id") Long id) {
+        Student student = studentService.findStudentById(id);
+
+        if (student == null) {
+
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity("Student with ID " + id + " was not found in database.").type(MediaType.TEXT_PLAIN_TYPE).build());
+        }
         studentService.deleteStudent(id);
         return Response.ok().build();
     }
