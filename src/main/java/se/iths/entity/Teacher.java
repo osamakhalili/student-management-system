@@ -4,6 +4,7 @@ import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,17 +19,18 @@ public class Teacher {
     @NotNull
     private String lastName;
 
-    @ManyToMany
-    private List<Subject> subjects;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "teacher_subject",
+            joinColumns = @JoinColumn(name = "teacher_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    private List<Subject> subjects = new ArrayList<>();
 
     public Teacher() {
-
     }
 
-    public Teacher(String firstName, String lastName, List<Subject> subjects) {
+    public Teacher(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.subjects = subjects;
     }
 
     public Long getId() {
@@ -54,7 +56,7 @@ public class Teacher {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    @JsonbTransient
+
     public List<Subject> getSubjects() {
         return subjects;
     }
@@ -62,4 +64,15 @@ public class Teacher {
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
     }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", subjects=" + subjects +
+                '}';
+    }
 }
+

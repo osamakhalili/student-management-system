@@ -3,7 +3,7 @@ package se.iths.entity;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 public class Subject {
@@ -15,30 +15,26 @@ public class Subject {
     private String name;
 
 
-    @ManyToMany
-    private List<Teacher> teachers;
+    @ManyToMany(mappedBy = "subjects")
+    @JsonbTransient
+    private List<Teacher> teachers = new ArrayList<>();
 
-    @ManyToMany
-    private List<Student> students;
+
+    @ManyToMany(mappedBy = "subjects")
+    @JsonbTransient
+    private List<Student> students = new ArrayList<>();
+
 
     public Subject() {
+        this.teachers = new ArrayList<>();
+        this.students = new ArrayList<>();
     }
 
-    public Subject(String name, List<Teacher> teachers, List<Student> students) {
+    public Subject(String name) {
         this.name = name;
-        this.teachers = teachers;
-        this.students = students;
+        this.teachers = new ArrayList<>();
+        this.students = new ArrayList<>();
     }
-    @JsonbTransient
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
-
-
 
     public Long getId() {
         return id;
@@ -55,7 +51,7 @@ public class Subject {
     public void setName(String name) {
         this.name = name;
     }
-    @JsonbTransient
+
     public List<Teacher> getTeachers() {
         return teachers;
     }
@@ -63,4 +59,23 @@ public class Subject {
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
     }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", teachers=" + teachers +
+                ", students=" + students +
+                '}';
+    }
 }
+

@@ -4,6 +4,7 @@ import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,30 +25,21 @@ public class Student {
     public String email;
     private String phoneNumber;
 
-    @ManyToMany
-    private List<Subject> subjects;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "student_subjects",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    private List<Subject> subjects = new ArrayList<>();
 
     public Student() {
     }
 
-    public Student(String firstName, String lastName, String email, String phoneNumber, List<Subject> subjects) {
+    public Student(String firstName, String lastName, String email, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.subjects = subjects;
     }
-
-    @JsonbTransient
-    public List<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
-    }
-
-
 
     public Long getId() {
         return id;
@@ -88,4 +80,26 @@ public class Student {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", subjects=" + subjects +
+                '}';
+    }
 }
+
+
