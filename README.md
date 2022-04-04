@@ -1,6 +1,6 @@
 # student-management-system
 
-osama khalili
+osama khalili jag Vi arbetade som en grupp med mohammad naim almani
 
 http://localhost:8080/student-management-system/api/v1/student/{id}	            DELETE student by id 
 
