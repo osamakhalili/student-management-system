@@ -14,7 +14,7 @@ http://localhost:8080/student-management-system/api/v1/student	                P
 
 http://localhost:8080/student-management-system/api/v1/student	                PUT  updat student 
 
-http://localhost:8080/student-management-system/api/v1/student/getbylastname	  GET  student by last name 
+http://localhost:8080/student-management-system/api/v1/student/getbylastname	GET  student by last name 
 
 
 json file: 
