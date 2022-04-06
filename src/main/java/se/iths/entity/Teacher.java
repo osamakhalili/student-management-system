@@ -3,8 +3,6 @@ package se.iths.entity;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,18 +17,20 @@ public class Teacher {
     @NotNull
     private String lastName;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "teacher_subject",
-            joinColumns = @JoinColumn(name = "teacher_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id"))
-    private List<Subject> subjects = new ArrayList<>();
+   @ManyToMany(cascade = CascadeType.PERSIST)
+   @JoinTable(name = "teacher_subject",
+           joinColumns = @JoinColumn(name = "teacher_id"),
+           inverseJoinColumns = @JoinColumn(name = "subject_id"))
+   @JsonbTransient
+   private List<Subject> subjects;
 
-    public Teacher() {
-    }
-
-    public Teacher(String firstName, String lastName) {
+    public Teacher(String firstName, String lastName, List<Subject> subjects) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.subjects = subjects;
+    }
+
+    public Teacher() {
     }
 
     public Long getId() {

@@ -1,7 +1,7 @@
 package se.iths.service;
 
-
 import se.iths.entity.Student;
+import se.iths.entity.Subject;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,21 +31,28 @@ public class StudentService {
     }
 
     public void deleteStudent(Long id) {
-        Student foundStudent = entityManager.find(Student.class, id);
-        entityManager.remove(foundStudent);
+        Student foundItem = entityManager.find(Student.class, id);
+        entityManager.remove(foundItem);
     }
 
-    public Student updateEmail(Long id, String email ) {
-        Student foundStudent = entityManager.find(Student.class, id);
-        foundStudent.setEmail(email);
-        return foundStudent;
+    public Student updatePhoneNumber(Long id, String phoneNumber) {
+        Student foundItem = entityManager.find(Student.class, id);
+        foundItem.setPhoneNumber(phoneNumber);
+        return foundItem;
     }
 
-    public List<Student> getByLastName(String lastName) {
-        String query = "SELECT i FROM Student i WHERE i.lastName = ?1";
-        return entityManager.createQuery(query, Student.class).setParameter(1, lastName).getResultList();
+    public Subject addSubject(Long subjectId, Long studentId) {
+        {
+            Student student = entityManager.find(Student.class, studentId);
+            Subject subject = entityManager.find(Subject.class, subjectId);
+            student.getSubjects().add(subject);
+            return subject;
+        }
     }
-
+    public List<Student> getBylastName(String lastName) {
+        String query = "SELECT i FROM Student i WHERE i.lastName = :lastName";
+        return entityManager.createQuery(query, Student.class).setParameter("lastName", lastName).getResultList();
+    }
 
 
 

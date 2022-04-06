@@ -3,7 +3,7 @@ package se.iths.entity;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import javax.validation.constraints.Size;
 import java.util.List;
 @Entity
 public class Subject {
@@ -14,26 +14,31 @@ public class Subject {
     @NotNull
     private String name;
 
-
-    @ManyToMany(mappedBy = "subjects")
+   @ManyToMany(mappedBy = "subjects")
     @JsonbTransient
-    private List<Teacher> teachers = new ArrayList<>();
-
-
-    @ManyToMany(mappedBy = "subjects")
+    private List<Student> students;
+   @ManyToMany(mappedBy = "subjects")
     @JsonbTransient
-    private List<Student> students = new ArrayList<>();
+    private List<Teacher> teachers;
+
+    public Subject(String name, List<Student> students, List<Teacher> teachers) {
+        this.name = name;
+        this.students = students;
+        this.teachers = teachers;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
 
 
     public Subject() {
-        this.teachers = new ArrayList<>();
-        this.students = new ArrayList<>();
     }
+
 
     public Subject(String name) {
         this.name = name;
-        this.teachers = new ArrayList<>();
-        this.students = new ArrayList<>();
     }
 
     public Long getId() {
@@ -52,30 +57,22 @@ public class Subject {
         this.name = name;
     }
 
-    public List<Teacher> getTeachers() {
-        return teachers;
-    }
-
-    public void setTeachers(List<Teacher> teachers) {
-        this.teachers = teachers;
-    }
-
     public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
+
 
     @Override
     public String toString() {
         return "Subject{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", teachers=" + teachers +
                 ", students=" + students +
+                ", teachers=" + teachers +
                 '}';
     }
 }
+
+
 
