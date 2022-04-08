@@ -18,8 +18,15 @@ public class StudentRest {
 
     @PersistenceContext
     EntityManager entityManager;
-    @Inject
+
+
+
     StudentService studentService;
+
+    @Inject
+    public StudentRest(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
     @Path("")
     @POST

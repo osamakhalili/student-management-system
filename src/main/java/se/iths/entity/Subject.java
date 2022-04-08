@@ -1,10 +1,16 @@
 package se.iths.entity;
 
+import com.fasterxml.jackson.annotation.*;
+
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @Entity
 public class Subject {
     @Id
@@ -14,11 +20,12 @@ public class Subject {
     @NotNull
     private String name;
 
-   @ManyToMany(mappedBy = "subjects")
-    @JsonbTransient
-    private List<Student> students;
-   @ManyToMany(mappedBy = "subjects")
-    @JsonbTransient
+   @ManyToMany
+   @JsonBackReference
+   private List<Student> students;
+
+    @ManyToMany
+    @JsonBackReference
     private List<Teacher> teachers;
 
     public Subject(String name, List<Student> students, List<Teacher> teachers) {
@@ -61,17 +68,23 @@ public class Subject {
         return students;
     }
 
-
-
-    @Override
-    public String toString() {
-        return "Subject{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", students=" + students +
-                ", teachers=" + teachers +
-                '}';
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
+    public void addStudent(Student student){
+        students.add(student);
+    }
+    public void removeStudent(Student student){
+        students.remove(student);
+    }
+    public void addTeacher(Teacher teacher){
+        teachers.add(teacher);
+    }
+    public void removeTeacher(Teacher teacher){
+        teachers.remove(teacher);
+    }
+
+
 }
 
 

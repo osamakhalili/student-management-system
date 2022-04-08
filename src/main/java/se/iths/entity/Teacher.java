@@ -1,5 +1,7 @@
 package se.iths.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,11 +19,8 @@ public class Teacher {
     @NotNull
     private String lastName;
 
-   @ManyToMany(cascade = CascadeType.PERSIST)
-   @JoinTable(name = "teacher_subject",
-           joinColumns = @JoinColumn(name = "teacher_id"),
-           inverseJoinColumns = @JoinColumn(name = "subject_id"))
-   @JsonbTransient
+   @ManyToMany(mappedBy = "teachers", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+   @JsonManagedReference
    private List<Subject> subjects;
 
     public Teacher(String firstName, String lastName, List<Subject> subjects) {
@@ -63,6 +62,10 @@ public class Teacher {
 
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    public void addSubject(Subject subject) {
+        this.subjects.add(subject);
     }
 
     @Override

@@ -1,7 +1,11 @@
 package se.iths.rest;
 
+import se.iths.entity.Student;
 import se.iths.entity.Subject;
+import se.iths.entity.Teacher;
+import se.iths.service.StudentService;
 import se.iths.service.SubjectService;
+import se.iths.service.TeacherService;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
@@ -15,8 +19,18 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class SubjectRest {
 
-    @Inject
+
     SubjectService subjectService;
+    StudentService studentService;
+    TeacherService teacherService;
+
+    @Inject
+    public SubjectRest(SubjectService subjectService, StudentService studentService,TeacherService teacherService) {
+        this.subjectService = subjectService;
+        this.studentService = studentService;
+        this.teacherService = teacherService;
+    }
+
 
     @Path("")
     @POST
@@ -94,6 +108,26 @@ public class SubjectRest {
                     .entity("Subject with ID " + id + " was not found in database.").type(MediaType.TEXT_PLAIN_TYPE).build());
         }
         subjectService.deleteSubject(id);
+        return Response.ok().build();
+    }
+
+    @Path("/student/{subjectid}/{studentid}")
+    @PATCH
+    public Response addStudent(@PathParam("subjectid") Long subjectId, @PathParam("studentid") Long studentId) {
+        Subject foundSubject = subjectService.findSubjectById(subjectId);
+        Student foundStudent = studentService.findStudentById(studentId);
+        subjectService.addStudent(foundStudent, subjectId);
+       //studentService.addSubjectToStudent(foundSubject, studentId);
+        return Response.ok().build();
+    }
+
+    @Path("/teacher/{subjectid}/{teacherid}")
+    @PATCH
+    public Response addteacher(@PathParam("subjectid") Long subjectId, @PathParam("teacherid") Long teacherId) {
+        Subject foundSubject = subjectService.findSubjectById(subjectId);
+        Teacher foundTeacher = teacherService.findTeacherById(teacherId);
+        subjectService.addTeacher(foundTeacher, subjectId);
+        teacherService.addSubjectToTeacher(teacherId,foundSubject);
         return Response.ok().build();
     }
 
