@@ -30,7 +30,7 @@ public class StudentRest {
 
     @Path("")
     @POST
-    public Response createStudent(Student student) {
+    public Response createStudent( Student student) {
 
         try {
             studentService.createStudent(student);

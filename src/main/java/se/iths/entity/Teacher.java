@@ -1,6 +1,6 @@
 package se.iths.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
@@ -19,7 +19,7 @@ public class Teacher {
     @NotNull
     private String lastName;
 
-   @ManyToMany(mappedBy = "teachers", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+   @ManyToMany
    @JsonManagedReference
    private List<Subject> subjects;
 
@@ -31,7 +31,6 @@ public class Teacher {
 
     public Teacher() {
     }
-
     public Long getId() {
         return id;
     }

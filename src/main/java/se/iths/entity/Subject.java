@@ -24,7 +24,7 @@ public class Subject {
    @JsonBackReference
    private List<Student> students;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "subjects",cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JsonBackReference
     private List<Teacher> teachers;
 

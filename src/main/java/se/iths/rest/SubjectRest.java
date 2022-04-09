@@ -117,7 +117,6 @@ public class SubjectRest {
         Subject foundSubject = subjectService.findSubjectById(subjectId);
         Student foundStudent = studentService.findStudentById(studentId);
         subjectService.addStudent(foundStudent, subjectId);
-       //studentService.addSubjectToStudent(foundSubject, studentId);
         return Response.ok().build();
     }
 
@@ -127,7 +126,6 @@ public class SubjectRest {
         Subject foundSubject = subjectService.findSubjectById(subjectId);
         Teacher foundTeacher = teacherService.findTeacherById(teacherId);
         subjectService.addTeacher(foundTeacher, subjectId);
-        teacherService.addSubjectToTeacher(teacherId,foundSubject);
         return Response.ok().build();
     }
 
