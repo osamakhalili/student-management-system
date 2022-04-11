@@ -47,7 +47,13 @@ http://localhost:8080/student-management-system/api/v1/subject                  
 }
 
 -----------------------------------------------------------------------------------------------------
-http://localhost:8080/student-management-system/api/v1/teacher                 POST create Teacher
+
+http://localhost:8080/student-management-system/api/v1/subject                  Get Subject subject
+
+
+-----------------------------------------------------------------------------------------------------
+
+http://localhost:8080/student-management-system/api/v1/teacher                  POST create Teacher
 
 {
 "firstName": " your first name",
