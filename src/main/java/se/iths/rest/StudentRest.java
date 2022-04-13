@@ -37,7 +37,7 @@ public class StudentRest {
             return Response.ok(student).build();
         }catch (Exception ex){
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity  ("Email is alrady used or name is missing " ).type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity  ("Email is alrady used or name is missing " ).build());
         }
     }
 
@@ -49,7 +49,7 @@ public class StudentRest {
         if (student == null) {
 
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Student with ID " + id + " was not found in database.").type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity("Student with ID " + id + " was not found in database.").build());
         }
         return Response.ok(student).build();
     }
@@ -69,7 +69,7 @@ public class StudentRest {
         if (result.size()<=0) {
 
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Student with lastName " + lastName + " was not found in database.").type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity("Student with lastName " + lastName + " was not found in database.").build());
         }
         return  Response.ok(result).build() ;
 
@@ -84,7 +84,7 @@ public class StudentRest {
             return Response.ok(student).build();
         }catch (Exception ex){
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity  ("Email is alrady used or Something is missing " ).type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity  ("Email is alrady used or Something is missing " ).build());
         }
     }
 
@@ -96,7 +96,7 @@ public class StudentRest {
         if (findStudent == null) {
 
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Student with ID " + id + " was not found in database.").type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity("Student with ID " + id + " was not found in database.").build());
         }
 
         Student updateEmail = studentService.updateEmail(id,student.getEmail());
@@ -111,7 +111,7 @@ public class StudentRest {
         if (student == null) {
 
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Student with ID " + id + " was not found in database.").type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity("Student with ID " + id + " was not found in database.").build());
         }
         studentService.deleteStudent(id);
         return Response.ok().build();
