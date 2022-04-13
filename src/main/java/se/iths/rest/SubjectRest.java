@@ -3,6 +3,7 @@ package se.iths.rest;
 import se.iths.entity.Student;
 import se.iths.entity.Subject;
 import se.iths.entity.Teacher;
+import se.iths.erorr.Erorr;
 import se.iths.service.StudentService;
 import se.iths.service.SubjectService;
 import se.iths.service.TeacherService;
@@ -43,8 +44,9 @@ public class SubjectRest {
 
 
         catch ( ConstraintViolationException error){
+            Erorr err = new Erorr ("Insert a name");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity  ( "Insert a name").type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity  (err).build());
         }
 
 
@@ -53,8 +55,15 @@ public class SubjectRest {
     @Path("")
     @PUT
     public Response updateSubject(Subject subject) {
-        subjectService.updateSubject(subject);
-        return Response.ok(subject).build();
+
+        try{
+            subjectService.updateSubject(subject);
+            return Response.ok(subject).build();
+        }catch (Exception error){
+            Erorr err = new Erorr ("No subject found");
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity  (err).build());
+        }
     }
 
     @Path("{id}")
@@ -63,24 +72,13 @@ public class SubjectRest {
         Subject foundStudent = subjectService.findSubjectById(id);
 
         if (foundStudent == null) {
-
+            Erorr err = new Erorr ("Subject with ID " + id + " was not found in database.");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Subject with ID " + id + " was not found in database.").type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity(err).build());
         }
         return Response.ok(foundStudent).build();
     }
 
-    @Path("query")
-    @GET
-    public Response getAllSubject(@QueryParam("subject") String subject) {
-
-
-
-        String responseString = "Here is the list of  subject  " + subject;
-        return Response.ok(responseString).type(MediaType.TEXT_PLAIN_TYPE).build();
-
-
-    }
 
 
     @Path("")
@@ -88,9 +86,9 @@ public class SubjectRest {
     public Response getAllSubjects() {
         List<Subject> foundStudent = subjectService.getAllSubject();
         if (foundStudent == null) {
-
+            Erorr err = new Erorr ("The list of Subject is empty");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("The list of Subject is empty").type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity(err).build());
         }
         return Response.ok(foundStudent).build();
 
@@ -103,9 +101,9 @@ public class SubjectRest {
         Subject foundStudent = subjectService.findSubjectById(id);
 
         if (foundStudent == null) {
-
+            Erorr err = new Erorr ("Subject with ID " + id + " was not found in database.");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Subject with ID " + id + " was not found in database.").type(MediaType.TEXT_PLAIN_TYPE).build());
+                    .entity(err).build());
         }
         subjectService.deleteSubject(id);
         return Response.ok().build();
@@ -116,6 +114,11 @@ public class SubjectRest {
     public Response addStudent(@PathParam("subjectid") Long subjectId, @PathParam("studentid") Long studentId) {
         Subject foundSubject = subjectService.findSubjectById(subjectId);
         Student foundStudent = studentService.findStudentById(studentId);
+        if (foundStudent == null || foundSubject == null) {
+            Erorr err = new Erorr ("Subject  or student not found in database.");
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity(err).build());
+        }
         subjectService.addStudent(foundStudent, subjectId);
         return Response.ok().build();
     }
@@ -125,6 +128,11 @@ public class SubjectRest {
     public Response addteacher(@PathParam("subjectid") Long subjectId, @PathParam("teacherid") Long teacherId) {
         Subject foundSubject = subjectService.findSubjectById(subjectId);
         Teacher foundTeacher = teacherService.findTeacherById(teacherId);
+        if (foundTeacher == null || foundSubject == null) {
+            Erorr err = new Erorr ("Subject  or Teacher not found in database.");
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity(err).build());
+        }
         subjectService.addTeacher(foundTeacher, subjectId);
         return Response.ok().build();
     }

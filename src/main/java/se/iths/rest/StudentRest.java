@@ -1,6 +1,7 @@
 package se.iths.rest;
 
 import se.iths.entity.Student;
+import se.iths.erorr.Erorr;
 import se.iths.service.StudentService;
 
 import javax.inject.Inject;
@@ -36,8 +37,9 @@ public class StudentRest {
             studentService.createStudent(student);
             return Response.ok(student).build();
         }catch (Exception ex){
+            Erorr err = new Erorr ("Email is alrady used or name is missing found");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity  ("Email is alrady used or name is missing " ).build());
+                    .entity  (err).build());
         }
     }
 
@@ -47,9 +49,9 @@ public class StudentRest {
         Student student = studentService.findStudentById(id);
 
         if (student == null) {
-
+            Erorr err = new Erorr ("Student with ID " + id + " was not found in database.");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Student with ID " + id + " was not found in database.").build());
+                    .entity(err).build());
         }
         return Response.ok(student).build();
     }
@@ -67,9 +69,9 @@ public class StudentRest {
 
         List<Student> result= studentService.getByLastName(lastName);
         if (result.size()<=0) {
-
+            Erorr err = new Erorr ("Student with lastName " + lastName + " was not found in database.");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Student with lastName " + lastName + " was not found in database.").build());
+                    .entity(err).build());
         }
         return  Response.ok(result).build() ;
 
@@ -83,8 +85,9 @@ public class StudentRest {
             studentService.updateStudent(student);
             return Response.ok(student).build();
         }catch (Exception ex){
+            Erorr err = new Erorr ("Email is alrady used or Something is missing ");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity  ("Email is alrady used or Something is missing " ).build());
+                    .entity  (err).build());
         }
     }
 
@@ -94,9 +97,9 @@ public class StudentRest {
         Student findStudent = studentService.findStudentById(id);
 
         if (findStudent == null) {
-
+            Erorr err = new Erorr ("Student with ID " + id + " was not found in database.");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Student with ID " + id + " was not found in database.").build());
+                    .entity(err).build());
         }
 
         Student updateEmail = studentService.updateEmail(id,student.getEmail());
@@ -109,9 +112,9 @@ public class StudentRest {
         Student student = studentService.findStudentById(id);
 
         if (student == null) {
-
+            Erorr err = new Erorr ("Student with ID " + id + " was not found in database.");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Student with ID " + id + " was not found in database.").build());
+                    .entity(err).build());
         }
         studentService.deleteStudent(id);
         return Response.ok().build();

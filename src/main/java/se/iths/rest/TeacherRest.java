@@ -32,9 +32,9 @@ public class TeacherRest {
 
         List<Teacher> foundTeacher = teacherService.getAllTeacher();
         if (foundTeacher == null) {
-
+          Erorr err = new Erorr ("No Teacher found");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("The list of Teachers is empty").build());
+                    .entity(err).build());
         }
         return Response.ok(foundTeacher).build();
     }
@@ -63,8 +63,9 @@ public class TeacherRest {
         teacherService.updateTeacher(teacher);
         return Response.ok(teacher).build();
         }catch (Exception error){
+            Erorr err = new Erorr ("No Teacher found");
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity  ("No Teacher found " ).build());
+                    .entity  (err).build());
         }
     }
 
